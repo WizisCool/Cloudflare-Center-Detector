@@ -2,6 +2,8 @@
 
 [![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/WizisCool/Cloudflare-Center-Detector/blob/master/LICENSE)
 
+#### [中文 文档](./README.md)
+
 Cloudflare Center Detector is a web application that automatically detects and displays the Cloudflare data center you are connected to. Whether you're curious about which Cloudflare data center you're using or want to optimize your content delivery, this tool provides you with that information in a user-friendly interface.
 
 ## Features
