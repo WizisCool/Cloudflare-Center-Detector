@@ -24,23 +24,22 @@ Vue.component('data-center', {
                 const traceResponse = await fetch('https://www.cloudflare.com/cdn-cgi/trace');
                 const traceText = await traceResponse.text();
         
-                // 处理 traceText 以获取 colo 值
                 const coloLine = traceText.split('\n').find(line => line.startsWith('colo='));
                 if (coloLine) {
                     const coloCode = coloLine.split('=')[1];
                     if (colosData[coloCode]) {
                         this.coloInfo = colosData[coloCode];
                     } else {
-                        this.errorMessage = '未找到匹配的 Cloudflare 数据中心信息';
+                        this.errorMessage = 'No matching Cloudflare data centre information found';
                     }
                 } else {
-                    this.errorMessage = '无法解析 Cloudflare 数据中心信息';
+                    this.errorMessage = 'Unable to parse Cloudflare data centre information';
                 }
             } catch (error) {
-                this.errorMessage = '检测失败，请检查网络连接';
+                this.errorMessage = 'Detection failed, please check network connection';
             }
         
-            this.loading = false; // 确保在所有情况下都更新 loading 状态
+            this.loading = false; 
         },
         toggleDarkMode() {
             this.darkMode = !this.darkMode;
@@ -99,7 +98,7 @@ Vue.component('data-center', {
                 </iframe>
             </div>
         </div>
-            
+
         <div class="footer mt-5" style="color: gray; font-size: 0.8rem; display: flex; justify-content: center; align-items: center; gap: 15px;">
         <!-- 
             COPYRIGHT NOTICE
