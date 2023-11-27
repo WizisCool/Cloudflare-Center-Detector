@@ -13,7 +13,7 @@ Cloudflare Center Detector is a web application that automatically detects and d
 - **Open Source**: The project is open source and licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
 
 ## Demo
-You can try out the Cloudflare Center Detector at [Demo Link]([https://example.com](https://wiziscool.github.io/Cloudflare-Center-Detector/)).
+You can try out the Cloudflare Center Detector at [Demo Link](https://wiziscool.github.io/Cloudflare-Center-Detector/).
 
 ## Usage
 - This is a pure front-end web page, you just need to download all the code to the local or your server, ~~and then give the repository point a Star~~, and then follow the GNU protocol on the access!
