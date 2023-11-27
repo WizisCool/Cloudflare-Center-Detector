@@ -14,9 +14,7 @@ Cloudflare Center Detector is a web application that automatically detects and d
 You can try out the Cloudflare Center Detector at [Demo Link]([https://example.com](https://wiziscool.github.io/Cloudflare-Center-Detector/)).
 
 ## Usage
-- Visit the website.
-- The Cloudflare data center you are connected to will be displayed on the page.
-- Toggle the dark mode by clicking the moon/sun icon in the top right corner.
+- This is a pure front-end web page, you just need to download all the code to the local or your server, ~~and then give the repository point a Star~~, and then follow the GNU protocol on the access!
 
 ## Contributing
 Contributions are welcome! For major changes, please open an issue first to discuss what you would like to change.
