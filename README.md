@@ -1,8 +1,8 @@
-# Cloudflare 中心探测器 🌍
+# Cloudflare Center Detector 🌍
 
 [![GitHub 许可证](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/WizisCool/Cloudflare-Center-Detector/blob/master/LICENSE)  
 #### [English Readme](./README_EN.md)
-Cloudflare 中心检测器是一款网络应用程序，可自动检测并显示您所连接的 Cloudflare 数据中心。无论您是对正在使用的 Cloudflare 数据中心感到好奇，还是希望优化内容交付，该工具都能在用户友好的界面上为您提供相关信息。
+Cloudflare Center Detector 是一款网络应用程序，可自动检测并显示您所连接的 Cloudflare 数据中心。无论您是对正在使用的 Cloudflare 数据中心感到好奇，还是希望优化内容交付，该工具都能在用户友好的界面上为您提供相关信息。
 
 ### 功能
 - **自动检测**： 无需手动检查 Cloudflare 数据中心，本工具会为您完成检查。
