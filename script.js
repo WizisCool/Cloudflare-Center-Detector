@@ -5,6 +5,9 @@ Vue.component('data-center', {
             coloInfo: null,
             errorMessage: '',
             darkMode: true,
+            ipAddress: null,
+            warpStatus: null,
+            tlsProtocol: null,
         };
     },
     created: function () {
@@ -23,29 +26,42 @@ Vue.component('data-center', {
                 const colosData = await colosDataResponse.json();
                 const traceResponse = await fetch('https://www.cloudflare.com/cdn-cgi/trace');
                 const traceText = await traceResponse.text();
-        
-                const coloLine = traceText.split('\n').find(line => line.startsWith('colo='));
-                if (coloLine) {
-                    const coloCode = coloLine.split('=')[1];
-                    if (colosData[coloCode]) {
-                        this.coloInfo = colosData[coloCode];
-                    } else {
-                        this.errorMessage = 'No matching Cloudflare data centre information found';
+
+                const traceLines = traceText.split('\n');
+                traceLines.forEach(line => {
+                    const [key, value] = line.split('=');
+                    switch (key) {
+                        case 'colo':
+                            if (colosData[value]) {
+                                this.coloInfo = colosData[value];
+                            } else {
+                                this.errorMessage = 'No matching Cloudflare data centre information found';
+                            }
+                            break;
+                        case 'ip':
+                            this.ipAddress = value;
+                            break;
+                        case 'warp':
+                            this.warpStatus = value;
+                            break;
+                        case 'tls':
+                            this.tlsProtocol = value;
+                            break;
+                        // ... 其他需要解析的字段
                     }
-                } else {
-                    this.errorMessage = 'Unable to parse Cloudflare data centre information';
-                }
+                });
+
             } catch (error) {
                 this.errorMessage = 'Detection failed, please check network connection';
             }
-        
-            this.loading = false; 
+
+            this.loading = false;
         },
         toggleDarkMode() {
             this.darkMode = !this.darkMode;
             this.applyDarkMode();
         },
-    
+
         applyDarkMode() {
             document.body.style.backgroundColor = this.darkMode ? '#212529' : '#fff';
             document.body.style.color = this.darkMode ? 'white' : 'black';
@@ -74,52 +90,43 @@ Vue.component('data-center', {
             
             <div class="card mx-auto" :style="cardStyle" style="max-width: 500px;">
                 <div class="card-body">
-                    
                     <div v-if="loading" class="spinner-grow text-primary" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>
                     <div v-else-if="coloInfo" class="card-text">
-                        <p class="mb-2">You are currently hitting:</p>
-                        <img :src="flagUrl(coloInfo.cca2)" alt="Flag" class="img-fluid mb-2" style="height: 20px;">
-                        <p class="mb-0">{{ coloInfo.region }} - {{ coloInfo.city }} ({{ coloInfo.cca2 }})</p>
+                        <h5 class="mb-2">Data Centre Info:</h5>
+                        <p><img :src="flagUrl(coloInfo.cca2)" alt="Flag" class="img-fluid mb-2" style="height: 20px;"> {{ coloInfo.region }} - {{ coloInfo.city }} ({{ coloInfo.cca2 }})</p>
+                        <p v-if="ipAddress"><strong>IP Address:</strong> {{ ipAddress }}</p>
+                        <p v-if="warpStatus"><strong>WARP Status:</strong> {{ warpStatus }}</p>
+                        <p v-if="tlsProtocol"><strong>TLS Protocol:</strong> {{ tlsProtocol }}</p>
                     </div>
                     <p v-else>{{ errorMessage }}</p>
                 </div>
             </div>
+
+            <!-- Google 地图 -->
             <div v-if="coloInfo" class="card mx-auto mt-4" :style="cardStyle" style="max-width: 500px;">
-            <div class="card-body">
-                <h5 class="card-title mb-3">Data centre location</h5>
-                <iframe
-                    width="100%"
-                    height="250"
-                    frameborder="0" style="border:0"
-                    :src="'https://www.google.com/maps?q=' + coloInfo.lat + ',' + coloInfo.lon + '&z=8&output=embed'"
-                    allowfullscreen>
-                </iframe>
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Data Centre Location</h5>
+                    <iframe
+                        width="100%"
+                        height="250"
+                        frameborder="0" style="border:0"
+                        :src="'https://www.google.com/maps?q=' + coloInfo.lat + ',' + coloInfo.lon + '&z=8&output=embed'"
+                        allowfullscreen>
+                    </iframe>
+                </div>
             </div>
-        </div>
 
-        <div class="footer mt-5" style="color: gray; font-size: 0.8rem; display: flex; justify-content: center; align-items: center; gap: 15px;">
-        <!-- 
-            COPYRIGHT NOTICE
-            Developers are advised not to alter or remove the copyright information below.
-            This project is licensed under the GNU General Public License v3.0.
-            Modification of the copyright information is against the terms of the license.
-            
-            版权声明
-            建议开发者不要更改或删除下方的版权信息。
-            本项目根据 GNU 通用公共许可证 v3.0 授权。
-            修改版权信息将违反许可证条款。
-        -->
-        <p>Follows the <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" style="color: inherit; text-decoration: none;"><i class="fas fa-code"></i> GNU General Public License v3.0</a></p>
-            <p><a href="https://github.com/WizisCool/Cloudflare-Center-Detector" target="_blank" style="color: inherit; text-decoration: none;"><i class="fab fa-github"></i> Cloudflare Center Detector</a></p>
-            <p><a href="https://dooo.ng" target="_blank" style="color: inherit; text-decoration: none;"><i class="fas fa-blog"></i> Dooo.ng</a></p>
+            <!-- 版权声明部分 -->
+            <div class="footer mt-5" style="color: gray; font-size: 0.8rem; display: flex; justify-content: center; align-items: center; gap: 15px;">
+                <!-- COPYRIGHT NOTICE -->
+                <p>Follows the <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" style="color: inherit; text-decoration: none;"><i class="fas fa-code"></i> GNU General Public License v3.0</a></p>
+                <p><a href="https://github.com/WizisCool/Cloudflare-Center-Detector" target="_blank" style="color: inherit; text-decoration: none;"><i class="fab fa-github"></i> Cloudflare Center Detector</a></p>
+                <p><a href="https://dooo.ng" target="_blank" style="color: inherit; text-decoration: none;"><i class="fas fa-blog"></i> Dooo.ng</a></p>
+            </div>
+            <!-- End of Copyright Notice -->
         </div>
-        <!-- End of Copyright Notice 
-             版权声明结束
-        -->
-
-    </div>
     `
 });
 
